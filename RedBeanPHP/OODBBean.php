@@ -1036,7 +1036,11 @@ class OODBBean implements\IteratorAggregate,\ArrayAccess,\Countable,Jsonable
 								($this->__info['sys.alias.'.$listName] !== $this->aliasName) : FALSE;
 		$hasSQL         = ($this->withSql !== '' || $this->via !== NULL);
 		$exists         = isset( $this->properties[$property] );
-		$fieldLink      = $property . '_id';
+		// original code by gabordemooij:
+		// $fieldLink      = $property . '_id';
+		// modification to prevent collision with columns named "XXX_id".
+		// see issue report: https://github.com/gabordemooij/redbean/issues/476#issuecomment-157195622
+		$fieldLink = $property . '_value_that_should_never_conflict_with_a_legit_column_name';
 
 		if ( ($isOwn || $isShared) &&  (!$exists || $hasSQL || $differentAlias) ) {
 
